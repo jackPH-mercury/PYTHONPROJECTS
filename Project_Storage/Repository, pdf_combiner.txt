@@ -1,0 +1,13 @@
+https://github.com/jackPH-mercury/pdf-combiner.git
+
+# (these notes correspond with the criteria for the pdf merger assignment, with each digit addressing it's respective requirement.)
+    # 1 & 2. Read output file name from command line
+    # 3. Initialize merger object
+    # 4. Retrieve files in current directory
+    # 5. Filter only .pdf files. Basically this just finds any and all .pdf files in your folder
+    # 6. Sorts found files alphabetically
+    # 7. Reports the newly sorted files found
+    # 8. Prompts the user to continue with merging .pdf files
+    # 9. Append PDFs (skip output file if it already exists)
+    # 10. Export merged file, this is where the merged file basically gets "minted" 
+        # I had trouble committing this hashtag notes to the repo, as they get ignored, so I figured I'd put the updated ones here. 
