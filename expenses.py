@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from datetime import datetime
-
+import matplotlib.pyplot as plt
 
 # Configuration
 FILE_NAME = "expenses.csv"
@@ -33,6 +33,18 @@ def add_expense(category, description, amount):
     df.to_csv(FILE_NAME, index=False)
     print("\n✅ Expense added successfully!")
 
+def delete_expense():
+    df = pd.read_csv(FILE_NAME)
+    print(df)
+    loc = int(input("Enter index to delete:"))
+    df = df.drop(index=loc)
+    df.to_csv(FILE_NAME,index=False)
+    view_summary()
+
+def save_expenses(df):
+    df = df.sort_values(by='Amount')
+    df.to_csv(FILE_NAME,index=False)
+
 def view_summary():
     """Displays data and basic stats using Pandas."""
     df = pd.read_csv(FILE_NAME)
@@ -51,7 +63,34 @@ def view_summary():
     print("\n--- Spending by Category ---")
     print(df.groupby("Category")["Amount"].sum())
 
+def edit_expense(location):
+    df = pd.read_csv(FILE_NAME)
+    location = int(location) - 1
+    if location < 0 or location >= len(df):
+        print("Invalid expense number.")
+        return
+    print("\nCurrent values:")
+    print(df.iloc[location])
+    new_cat = input("New Category (leave blank to keep same): ")
+    new_desc = input("New Description (leave blank to keep same): ")
+    new_amt = input("New Amount (leave blank to keep same): ")
+    if new_cat:
+        df.at[location, "Category"] = new_cat
+    if new_desc:
+        df.at[location, "Description"] = new_desc
+    if new_amt:
+        df.at[location, "Amount"] = float(new_amt)
+    df.to_csv(FILE_NAME, index=False)
+    print("Expense updated successfully!")
 
+def plot_expenses():
+    df = pd.read_csv(FILE_NAME)
+    category_totals = df.groupby('Category')['Amount'].sum()
+    plt.figure(figsize=(8,8)) # 8x8 inches
+    plt.pie(category_totals, labels=category_totals.index, autopct='%1.1f%%')
+    plt.title('Total Expense by Category')
+    plt.axis('equal')
+    plt.show()
 
 def main():
     initialize_df()
@@ -75,11 +114,12 @@ def main():
         elif choice == "2":
             view_summary()
         elif choice == "3":
-            pass
+            delete_expense()
         elif choice == "4":
-            pass
+            location = input("Enter expense number:")
+            edit_expense(int(location))
         elif choice == "5":
-            pass
+            plot_expenses()
         elif choice == "6":
             print("Goodbye!")
             break
